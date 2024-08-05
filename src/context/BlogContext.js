@@ -5,10 +5,28 @@ const blogReducer = (state, action) => {
         case 'ADD':
             return [...state, 
                 {id: Math.floor(Math.random() * 99999), 
-                 title : `Blog Post #${state.length + action.payload}`
+                 title : action.payload.title,    //`Blog Post #${state.length + action.payload}`
+                 content: action.payload.content
                 }]
         case 'DELETE':
             return state.filter((item) => item.id !== action.payload)
+        case 'EDIT':
+            return state.map((blog) => {
+                //same code as below using ternary expression
+                return blog.id === action.payload.id ? action.payload : blog
+
+                // if(blog.id === action.payload.id){
+                //     return action.payload
+
+                //     //same code as above
+                //     // return {
+                //     //     id: blog.id,
+                //     //     title: action.payload.title,
+                //     //     content: action.payload.content
+                //     // }
+                // }
+                // return blog
+            } )
         default:
             return state;
 
@@ -16,11 +34,32 @@ const blogReducer = (state, action) => {
 }
 
 const addBlogPost = (dispatch) => {
-  return () => dispatch({type: "ADD", payload : 2})
+  return (title, content, callback) => {
+    // console.log("SOME TEST HERE-------");
+    // console.log(title);
+    // console.log(content);
+    // console.log("SOME TEST HERE++++++++");
+
+
+    dispatch({type: "ADD", payload : {title, content}})
+
+    if(callback){
+        callback()    
+    }
+
+  }
 }
 
 const deleteBlogPost = (dispatch) => {
     return (id) => dispatch({type: "DELETE", payload : id})
+}
+
+const editBlogPost = (dispatch) => {
+    return (id, title, content, callback) => { dispatch({type: "EDIT", payload : {id, title, content}})
+        if(callback){
+            callback()
+        }
+    }
 }
 
 
@@ -34,8 +73,8 @@ const deleteBlogPost = (dispatch) => {
 
 export const {Context, Provider} = createDataContext(
     blogReducer, 
-    {addBlogPost, deleteBlogPost}, 
-    [] 
+    {addBlogPost, deleteBlogPost, editBlogPost}, 
+    [{title: 'Bilal', content: 'Hussain', id: 1}] 
 )
 
 
