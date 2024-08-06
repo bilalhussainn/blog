@@ -1,14 +1,12 @@
 import { StyleSheet,  View } from 'react-native'
-import React, { useContext, useState } from 'react'
+import React, { useContext } from 'react'
 import { Context } from '../context/BlogContext'
 import BlogPostForm from '../components/BlogPostForm'
 
 const EditScreen = ({navigation, route}) => {
 
     const id = route.params.id
-
     const {state, editBlogPost} = useContext(Context)
-
     const blog = state.find((item) => item.id === id)
 
   return (

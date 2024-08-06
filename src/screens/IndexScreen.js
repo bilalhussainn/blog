@@ -1,11 +1,11 @@
-import { Button, FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useContext, useEffect } from 'react'
 import { Context } from '../context/BlogContext'
 import Feather from '@expo/vector-icons/Feather';
 
 const IndexScreen = ({navigation}) => {
 
-    const {state, addBlogPost, deleteBlogPost, getBlogPosts}  = useContext(Context)
+    const {state, deleteBlogPost, getBlogPosts}  = useContext(Context)
 
     useEffect(() => {
         getBlogPosts();
@@ -68,7 +68,6 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         paddingVertical: 20,
         paddingHorizontal: 15,
-        //borderTopWidth: 1,
         borderBottomWidth: 1,
         borderColor: 'gray'
     },
