@@ -1,13 +1,16 @@
+import jsonServer from "../api/jsonServer";
 import createDataContext from "./createDataContext";
 
 const blogReducer = (state, action) => {
     switch(action.type) {
-        case 'ADD':
-            return [...state, 
-                {id: Math.floor(Math.random() * 99999), 
-                 title : action.payload.title,    //`Blog Post #${state.length + action.payload}`
-                 content: action.payload.content
-                }]
+        case 'GET':
+            return action.payload
+        // case 'ADD':
+        //     return [...state, 
+        //         {id: Math.floor(Math.random() * 99999), 
+        //          title : action.payload.title,    //`Blog Post #${state.length + action.payload}`
+        //          content: action.payload.content
+        //         }]
         case 'DELETE':
             return state.filter((item) => item.id !== action.payload)
         case 'EDIT':
@@ -33,15 +36,33 @@ const blogReducer = (state, action) => {
     }
 }
 
+const getBlogPosts = dispatch => {
+    return async () => {
+        console.log("getBlogPosts called");
+        
+        const response = await jsonServer.get('/blogposts')
+        // response.data = [ {}. {}]  "array of objects."
+        
+        dispatch({type: 'GET', payload : response.data})
+    }
+}
+
 const addBlogPost = (dispatch) => {
-  return (title, content, callback) => {
-    // console.log("SOME TEST HERE-------");
-    // console.log(title);
-    // console.log(content);
-    // console.log("SOME TEST HERE++++++++");
+  return async (title, content, callback) => {
+    const response = await jsonServer.post('/blogposts', {title, content})
+    console.log("Response : " );
+    console.log(response);
+    
+    
 
 
-    dispatch({type: "ADD", payload : {title, content}})
+    // // console.log("SOME TEST HERE-------");
+    // // console.log(title);
+    // // console.log(content);
+    // // console.log("SOME TEST HERE++++++++");
+
+
+    // dispatch({type: "ADD", payload : {title, content}})
 
     if(callback){
         callback()    
@@ -51,11 +72,23 @@ const addBlogPost = (dispatch) => {
 }
 
 const deleteBlogPost = (dispatch) => {
-    return (id) => dispatch({type: "DELETE", payload : id})
+    return async (id) => {
+        
+        const response = await jsonServer.delete(`/blogposts/${id}`)
+        //better check weather the response is success and then locally dispatch for delete.
+        dispatch({type: "DELETE", payload : id})
+
+    }
 }
 
 const editBlogPost = (dispatch) => {
-    return (id, title, content, callback) => { dispatch({type: "EDIT", payload : {id, title, content}})
+    return async (id, title, content, callback) => { 
+        
+        const response = await jsonServer.put(`/blogposts/${id}`, {title, content})
+
+        //dispatch after api success. Need to add condition
+        dispatch({type: "EDIT", payload : {id, title, content}})
+ 
         if(callback){
             callback()
         }
@@ -73,7 +106,7 @@ const editBlogPost = (dispatch) => {
 
 export const {Context, Provider} = createDataContext(
     blogReducer, 
-    {addBlogPost, deleteBlogPost, editBlogPost}, 
+    {addBlogPost, deleteBlogPost, editBlogPost, getBlogPosts}, 
     [{title: 'Bilal', content: 'Hussain', id: 1}] 
 )
 

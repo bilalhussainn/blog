@@ -12,8 +12,24 @@ const IndexScreen = ({navigation}) => {
     // const blogPost = blogContent.data
     // const addBlogPost = blogContent.addBolgPost
 
-    const {state, addBlogPost, deleteBlogPost}  = useContext(Context)
+    const {state, addBlogPost, deleteBlogPost, getBlogPosts}  = useContext(Context)
     // () => navigation.navigate('Create')
+
+    useEffect(() => {
+
+        getBlogPosts();
+
+        //below code returns a listener . So we need to clean that when the screen/component unmounts.
+        const listener = navigation.addListener('focus',() =>{
+            getBlogPosts();
+        })
+
+        return () => {
+            listener.remove();
+            //navigation.removeListener(listener)
+        }
+
+    }, [])
 
     useEffect(() => {
         navigation.setOptions({
