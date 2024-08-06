@@ -26,12 +26,6 @@ const BlogPostForm = ({onSubmit, initialValues}) => {
           <Button styles={styles.save} title="Save Blog Post" 
             onPress={()=> {
                 onSubmit(title, content)
-                // addBlogPost(title, content, () => {
-                //     console.log("Callback received");
-                    
-                //     navigation.navigate('Index')
-                // })
-                //navigation.pop()
             }}
           />
         </View>

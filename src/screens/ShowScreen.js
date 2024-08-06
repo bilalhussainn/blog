@@ -11,7 +11,6 @@ const ShowScreen = ({navigation, route}) => {
     console.log(navigation);
     console.log(route);
     
-    
     const navigations = useNavigation();
 
     const id = route.params.id
@@ -20,20 +19,6 @@ const ShowScreen = ({navigation, route}) => {
 
     console.log(state);
     console.log(id);
-
-    //Wrong code. Set options argument is object. not a function.
-//    useEffect(() => {
-//         navigation.setOptions(() => ({
-//             headerTitle: "Bilal",
-//             headerRight: (props) => <Text>New</Text>
-//         }))
-//     }, [])
-
-    
-    //DOnt declare it ouside of useEffect.
-    // navigation.setOptions({ 
-    //     headerRight: (props) => <Text>New</Text>
-    //   })
 
     useEffect(()=>{
         navigation.setOptions({ 
@@ -44,17 +29,12 @@ const ShowScreen = ({navigation, route}) => {
         })
     },[])
     
-
-    //const blog = state.filter((item) => item.id === id)?.[0]
     const blog = state.find((item) => item.id === id)
-
     console.log(blog);
-    
 
   return (
     <View>
       <Text>{blog.title} </Text>
-
       <Text>{blog.content}</Text>
     </View>
   )

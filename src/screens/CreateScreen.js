@@ -7,33 +7,14 @@ const CreateScreen = ({navigation}) => {
     
     const {state, addBlogPost} = useContext(Context)
 
-    // useEffect(() => {
-    //     addBlogPost("NNN","BBB")
-    // }, [])
-    
-    //console.log(state);
-
-    // useEffect(() => {
-    //     console.log("TITLE");
-    //     console.log(title);
-
-    //     console.log("Content");
-    //     console.log(content);
-        
-    // }, [title, content])
-
     return <BlogPostForm onSubmit={(title, content) => {
         addBlogPost(title, content, () => {
             navigation.navigate("Index")
         })
     }} />
     
-
-
 }
 
+const styles = StyleSheet.create({})
+
 export default CreateScreen
-
-const styles = StyleSheet.create({
-
-})
